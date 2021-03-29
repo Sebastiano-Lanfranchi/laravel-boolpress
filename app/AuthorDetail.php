@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class AuthorDetail extends Model
 {
     public function author() {
-        return $this->belongsTo('App\Author');
+        return $this->belongsTo(Author::class);
     }
 }

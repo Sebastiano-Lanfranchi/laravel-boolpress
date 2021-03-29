@@ -5,8 +5,7 @@ use Faker\Generator as Faker;
 use App\Author;
 use App\AuthorDetail;
 
-
-class Author extends Seeder
+class AuthorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +14,6 @@ class Author extends Seeder
      */
     public function run(Faker $faker)
     {
-        $faker->addProvider(new WW\Faker\Provider\Picture($faker));
-
         $author = new Author();
         $author->name='John';
         $author->surname='Pippo';
@@ -27,7 +24,7 @@ class Author extends Seeder
         $authorDetail = new AuthorDetail();
         $authorDetail->bio='Lorem Ipsum';
         $authorDetail->website='http://John.com';
-        $authorDetail->pic='John';
+        $authorDetail->pic='https://picsum.photos/seed/'.rand(0, 1000).'200/300';
 
         $author->detail()->save($authorDetail);
     }
