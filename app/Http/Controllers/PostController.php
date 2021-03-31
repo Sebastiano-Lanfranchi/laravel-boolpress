@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Author;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -26,8 +27,11 @@ class PostController extends Controller
      */
     public function create()
     {
+
         $authors = Author::all();
-        return view('post.create', compact('authors'));
+        $tags = Tag::all();
+
+        return view('post.create', compact('authors'), compact('tags'));
     }
 
     /**
@@ -39,11 +43,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $author_id = $data['author_id'];
+        if(!Author::find($author_id)) {
+            dd('Questo é un check piccolino');
+        }
+
+        $alltags = Tag::all();
+        foreach ($alltags as $tag){
+            if(stripos($data['body'], $tag->name) !== false){
+                $finalArrayTags[] = $tag-> id;
+            }
+        }
+
         $post = new Post();
         $post->fill($data);
         $post->save;
 
-        return redirect()->route('post.index');
+        $post->tags()->attach($finalArrayTags);
+
+        return redirect()->route('posts.index');
     }
 
     /**
